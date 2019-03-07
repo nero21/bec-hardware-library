@@ -11,7 +11,9 @@ import android.widget.Toast
 import com.bec.hardwarelibrary.callback.OnScalesReadingReceived
 import com.bec.hardwarelibrary.printer.XPrinter.XPrinterSerialPortController
 import com.bec.hardwarelibrary.printer.XPrinter.XPrinter
+import com.bec.hardwarelibrary.scales.BPS30.BPS30Scales
 import com.bec.hardwarelibrary.scales.BPS30.BPS30ScalesController
+
 import com.bec.hardwarelibrary.utils.StringUtils
 import kotlinx.android.synthetic.main.activity_main.*
 import net.posprinter.posprinterface.IMyBinder
@@ -24,9 +26,14 @@ import java.util.*
 
 class MainActivity : AppCompatActivity(), OnScalesReadingReceived {
 
-    private val xPrinterSerialPortController by lazy { XPrinterSerialPortController(XPrinter()) }
+    private val xPrinterSerialPortController by lazy { XPrinterSerialPortController(serialPortDevice = XPrinter()) }
 
-    private val bpS30ScalesController by lazy { BPS30ScalesController(this) }
+    private val bpS30ScalesController by lazy {
+        BPS30ScalesController(
+            serialPortDevice = BPS30Scales(),
+            onScalesReadingReceived = this
+        )
+    }
 
     /**
      * 打印服务
@@ -49,18 +56,18 @@ class MainActivity : AppCompatActivity(), OnScalesReadingReceived {
         printerBinder?.let { binder ->
 
             binder
-                    .connectUsbPort(applicationContext,
-                            PosPrinterDev.GetUsbPathNames(applicationContext)?.let { it[0].orEmpty() }
-                                    ?: "",
-                            object : UiExecute {
-                                override fun onfailed() {
-                                    toast("连接失败")
-                                }
+                .connectUsbPort(applicationContext,
+                    PosPrinterDev.GetUsbPathNames(applicationContext)?.let { it[0].orEmpty() }
+                        ?: "",
+                    object : UiExecute {
+                        override fun onfailed() {
+                            toast("连接失败")
+                        }
 
-                                override fun onsucess() {
-                                    toast("连接成功")
-                                }
-                            })
+                        override fun onsucess() {
+                            toast("连接成功")
+                        }
+                    })
         }
     }
 
