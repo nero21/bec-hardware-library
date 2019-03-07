@@ -12,9 +12,11 @@ import net.posprinter.posprinterface.UiExecute
 /**
  * Created by 李卓鹏 on 2019/3/6 0006.
  */
-class PrinterSerialPortController(serialPortDevice: SerialPortDevice) : SerialPortController(serialPortDevice = serialPortDevice) {
+class XPrinterSerialPortController(serialPortDevice: SerialPortDevice) : SerialPortController(serialPortDevice = serialPortDevice) {
 
     override var onSerialPortReceived: OnSerialPortReceived? = null
+
+    override fun setBufferSize(): Int = 0
 
     /**
      * 连接打印机
@@ -85,7 +87,7 @@ class PrinterSerialPortController(serialPortDevice: SerialPortDevice) : SerialPo
 
     companion object {
 
-        const val TAG = "PrinterSerialPortController"
+        const val TAG = "XPrinterSerialPortController"
 
         //保存所有的后台任务
         private val taskList by lazy { ArrayList<PosAsynncTask>() }

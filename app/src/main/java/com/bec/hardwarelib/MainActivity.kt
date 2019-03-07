@@ -9,7 +9,7 @@ import android.os.Bundle
 import android.os.IBinder
 import android.widget.Toast
 import com.bec.hardwarelibrary.callback.OnScalesReadingReceived
-import com.bec.hardwarelibrary.printer.XPrinter.PrinterSerialPortController
+import com.bec.hardwarelibrary.printer.XPrinter.XPrinterSerialPortController
 import com.bec.hardwarelibrary.printer.XPrinter.XPrinter
 import com.bec.hardwarelibrary.scales.BPS30.BPS30ScalesController
 import com.bec.hardwarelibrary.utils.StringUtils
@@ -24,7 +24,7 @@ import java.util.*
 
 class MainActivity : AppCompatActivity(), OnScalesReadingReceived {
 
-    private val printerController by lazy { PrinterSerialPortController(XPrinter()) }
+    private val xPrinterSerialPortController by lazy { XPrinterSerialPortController(XPrinter()) }
 
     private val bpS30ScalesController by lazy { BPS30ScalesController(this) }
 
@@ -73,7 +73,7 @@ class MainActivity : AppCompatActivity(), OnScalesReadingReceived {
 
         //串口打印
         btn_open.setOnClickListener {
-            printerController.connect(object : UiExecute {
+            xPrinterSerialPortController.connect(object : UiExecute {
                 override fun onfailed() {
                     toast("开启失败")
                 }
@@ -85,7 +85,7 @@ class MainActivity : AppCompatActivity(), OnScalesReadingReceived {
         }
 
         btn_close.setOnClickListener {
-            printerController.disconnect(object : UiExecute {
+            xPrinterSerialPortController.disconnect(object : UiExecute {
                 override fun onfailed() {
                     toast("关闭失败")
                 }
@@ -97,7 +97,7 @@ class MainActivity : AppCompatActivity(), OnScalesReadingReceived {
         }
 
         btn_send.setOnClickListener {
-            printerController.writeDataBySerialPort(ProcessData {
+            xPrinterSerialPortController.writeDataBySerialPort(ProcessData {
 
                 return@ProcessData ArrayList<ByteArray>().apply {
                     add(DataForSendToPrinterPos80.initializePrinter())
@@ -133,7 +133,7 @@ class MainActivity : AppCompatActivity(), OnScalesReadingReceived {
         }
 
         btn_check_link.setOnClickListener {
-            printerController.checkLink(object : UiExecute {
+            xPrinterSerialPortController.checkLink(object : UiExecute {
                 override fun onfailed() {
                     toast("未连接")
                 }
@@ -240,6 +240,7 @@ class MainActivity : AppCompatActivity(), OnScalesReadingReceived {
      */
     @SuppressLint("SetTextI18n")
     override fun onReceived(reading: String, readingTime: Long) {
+        //可选择获取一次读数后关闭串口
 //        bpS30ScalesController.close()
         runOnUiThread {
             tv_weight.text = "读数：$reading kg ，时间：${Date(readingTime).toLocaleString()}"
@@ -263,7 +264,7 @@ class MainActivity : AppCompatActivity(), OnScalesReadingReceived {
     override fun onDestroy() {
         super.onDestroy()
         unbindService(printerServiceConnection)
-        PrinterSerialPortController.finishAllTask()
+        XPrinterSerialPortController.finishAllTask()
         bpS30ScalesController.close()
     }
 
@@ -272,7 +273,6 @@ class MainActivity : AppCompatActivity(), OnScalesReadingReceived {
         const val TAG = "MainActivity"
 
         var printerBinder: IMyBinder? = null
-
     }
 
 }
