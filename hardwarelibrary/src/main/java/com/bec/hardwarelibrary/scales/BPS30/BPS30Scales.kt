@@ -1,4 +1,4 @@
-package com.bec.hardwarelibrary.scales
+package com.bec.hardwarelibrary.scales.BPS30
 
 import com.bec.hardwarelibrary.common.SerialPortDevice
 

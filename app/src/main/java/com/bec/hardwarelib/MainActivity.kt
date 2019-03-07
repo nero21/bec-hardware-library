@@ -1,20 +1,27 @@
 package com.bec.hardwarelib
 
+import android.annotation.SuppressLint
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import com.bec.hardwarelibrary.callback.OnScalesReadingReceived
 import com.bec.hardwarelibrary.common.SerialPortController
 import com.bec.hardwarelibrary.printer.PrinterSerialPortController
 import com.bec.hardwarelibrary.printer.XPrinter
+import com.bec.hardwarelibrary.scales.BPS30.BPS30ScalesController
 import com.bec.hardwarelibrary.utils.StringUtils
 import kotlinx.android.synthetic.main.activity_main.*
 import net.posprinter.posprinterface.ProcessData
 import net.posprinter.posprinterface.UiExecute
 import net.posprinter.utils.DataForSendToPrinterPos80
+import java.time.format.DateTimeFormatter
+import java.util.*
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), OnScalesReadingReceived {
 
     private val printerController: PrinterSerialPortController by lazy { PrinterSerialPortController() }
+
+    private val bpS30ScalesController by lazy { BPS30ScalesController(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -92,14 +99,49 @@ class MainActivity : AppCompatActivity() {
             })
         }
 
+        btn_open_scales.setOnClickListener {
+            bpS30ScalesController.open()
+        }
+
+        btn_close_scales.setOnClickListener {
+            bpS30ScalesController.close()
+        }
+
+        btn_check_link.setOnClickListener {
+            toast("连接：${bpS30ScalesController.enable}")
+        }
+    }
+
+    /**
+     * 电子秤结果
+     * @param reading String
+     * @param readingTime Long
+     */
+    @SuppressLint("SetTextI18n")
+    override fun onReceived(reading: String, readingTime: Long) {
+//        bpS30ScalesController.close()
+        runOnUiThread {
+            tv_weight.text = "读数：$reading kg ，时间：${Date(readingTime).toLocaleString()}"
+        }
+    }
+
+    /**
+     * 电子秤报错
+     * @param throwable Throwable
+     */
+    override fun onError(throwable: Throwable) {
+        toast(throwable.toString())
     }
 
     private fun toast(text: String) {
-        Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
+        runOnUiThread {
+            Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
+        }
     }
 
     override fun onDestroy() {
         super.onDestroy()
         PrinterSerialPortController.finishAllTask()
+        bpS30ScalesController.close()
     }
 }

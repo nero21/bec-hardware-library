@@ -1,6 +1,7 @@
 package com.bec.hardwarelibrary.printer
 
 import android.os.AsyncTask
+import com.bec.hardwarelibrary.callback.OnSerialPortReceived
 import com.bec.hardwarelibrary.common.SerialPortController
 import com.bec.hardwarelibrary.common.SerialPortDevice
 import net.posprinter.asynncTask.PosAsynncTask
@@ -25,7 +26,9 @@ class PrinterSerialPortController {
 
         add(posAsynncTask = PosAsynncTask(uiExecute, BackgroundInit {
 
-            serialPortController = SerialPortController(serialPortDevice = serialPortDevice)
+            serialPortController = object : SerialPortController(serialPortDevice = serialPortDevice) {
+                override var onSerialPortReceived: OnSerialPortReceived? = null
+            }
 
             serialPortController?.open() ?: return@BackgroundInit false
 
