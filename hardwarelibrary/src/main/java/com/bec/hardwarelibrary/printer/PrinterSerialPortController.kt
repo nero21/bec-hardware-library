@@ -13,26 +13,21 @@ import java.io.IOException
 /**
  * Created by 李卓鹏 on 2019/3/6 0006.
  */
-class PrinterSerialPortController {
+class PrinterSerialPortController(serialPortDevice: SerialPortDevice) : SerialPortController(serialPortDevice = serialPortDevice) {
 
-    private var serialPortController: SerialPortController? = null
+    override var onSerialPortReceived: OnSerialPortReceived? = null
 
     /**
      * 连接打印机
-     * @param serialPortDevice SerialPortDevice
      * @param uiExecute UiExecute
      */
-    public fun connect(serialPortDevice: SerialPortDevice, uiExecute: UiExecute) {
+    public fun connect(uiExecute: UiExecute) {
 
         add(posAsynncTask = PosAsynncTask(uiExecute, BackgroundInit {
 
-            serialPortController = object : SerialPortController(serialPortDevice = serialPortDevice) {
-                override var onSerialPortReceived: OnSerialPortReceived? = null
-            }
+            open()
 
-            serialPortController?.open() ?: return@BackgroundInit false
-
-            return@BackgroundInit serialPortController?.enable ?: false
+            return@BackgroundInit enable
 
         }).apply {
             executeOnExecutor(AsyncTask.SERIAL_EXECUTOR, *arrayOfNulls<Void>(0))
@@ -48,19 +43,15 @@ class PrinterSerialPortController {
 
         add(posAsynncTask = PosAsynncTask(uiExecute, BackgroundInit {
 
+            if (!enable) return@BackgroundInit false
+
             val list: List<ByteArray> = processData.processDataBeforeSend()
 
-            return@BackgroundInit serialPortController?.let {
+            for (i in list.indices) {
+                send(list[i])
+            }
 
-                if (!it.enable) return@let false
-
-                for (i in list.indices) {
-                    it.send(list[i])
-                }
-
-                it.enable
-
-            } ?: return@BackgroundInit false
+            return@BackgroundInit enable
 
         }).apply {
             executeOnExecutor(AsyncTask.SERIAL_EXECUTOR, *arrayOfNulls<Void>(0))
@@ -71,7 +62,7 @@ class PrinterSerialPortController {
 
         add(posAsynncTask = PosAsynncTask(uiExecute, BackgroundInit {
 
-            return@BackgroundInit serialPortController?.enable ?: false
+            return@BackgroundInit enable
 
         }).apply {
             executeOnExecutor(AsyncTask.SERIAL_EXECUTOR, *arrayOfNulls<Void>(0))
@@ -83,10 +74,9 @@ class PrinterSerialPortController {
 
         add(posAsynncTask = PosAsynncTask(uiExecute, BackgroundInit {
 
-            return@BackgroundInit serialPortController?.let {
-                it.close()
-                true
-            } ?: return@BackgroundInit false
+            close()
+
+            return@BackgroundInit !enable
 
         }).apply {
             executeOnExecutor(AsyncTask.SERIAL_EXECUTOR, *arrayOfNulls<Void>(0))

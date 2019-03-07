@@ -10,11 +10,10 @@ import java.io.*
 /**
  * Created by 李卓鹏 on 2019/3/5 0005.
  */
-@Suppress("PLATFORM_CLASS_MAPPED_TO_KOTLIN")
-abstract class SerialPortController(private val serialPortDevice: SerialPortDevice) : java.lang.Object() {
+abstract class SerialPortController(private val serialPortDevice: SerialPortDevice) {
 
     //串口是否可用
-    var enable: Boolean = false
+    public var enable: Boolean = false
         private set
 
     //是否展示串口数据
@@ -138,7 +137,7 @@ abstract class SerialPortController(private val serialPortDevice: SerialPortDevi
 
                     if (size > 0) {
 
-                        if (showSerialPortData){
+                        if (showSerialPortData) {
                             Log.i(TAG, buffer.contentToString())
                         }
 
