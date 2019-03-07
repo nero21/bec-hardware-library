@@ -1,4 +1,4 @@
-package com.bec.hardwarelibrary.printer
+package com.bec.hardwarelibrary.printer.XPrinter
 
 import com.bec.hardwarelibrary.common.SerialPortDevice
 

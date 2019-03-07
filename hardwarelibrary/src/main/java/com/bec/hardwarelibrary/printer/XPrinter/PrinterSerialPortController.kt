@@ -1,4 +1,4 @@
-package com.bec.hardwarelibrary.printer
+package com.bec.hardwarelibrary.printer.XPrinter
 
 import android.os.AsyncTask
 import com.bec.hardwarelibrary.callback.OnSerialPortReceived
@@ -8,7 +8,6 @@ import net.posprinter.asynncTask.PosAsynncTask
 import net.posprinter.posprinterface.BackgroundInit
 import net.posprinter.posprinterface.ProcessData
 import net.posprinter.posprinterface.UiExecute
-import java.io.IOException
 
 /**
  * Created by 李卓鹏 on 2019/3/6 0006.

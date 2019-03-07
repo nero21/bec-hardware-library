@@ -7,12 +7,10 @@ import android.content.ServiceConnection
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.IBinder
-import android.util.Log
 import android.widget.Toast
 import com.bec.hardwarelibrary.callback.OnScalesReadingReceived
-import com.bec.hardwarelibrary.common.SerialPortController
-import com.bec.hardwarelibrary.printer.PrinterSerialPortController
-import com.bec.hardwarelibrary.printer.XPrinter
+import com.bec.hardwarelibrary.printer.XPrinter.PrinterSerialPortController
+import com.bec.hardwarelibrary.printer.XPrinter.XPrinter
 import com.bec.hardwarelibrary.scales.BPS30.BPS30ScalesController
 import com.bec.hardwarelibrary.utils.StringUtils
 import kotlinx.android.synthetic.main.activity_main.*
@@ -22,7 +20,6 @@ import net.posprinter.posprinterface.UiExecute
 import net.posprinter.service.PosprinterService
 import net.posprinter.utils.DataForSendToPrinterPos80
 import net.posprinter.utils.PosPrinterDev
-import java.time.format.DateTimeFormatter
 import java.util.*
 
 class MainActivity : AppCompatActivity(), OnScalesReadingReceived {
