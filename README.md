@@ -5,7 +5,7 @@
 适用于Android，使用Kotlin编写；
 
 #### 软件架构
-基于google的https://github.com/cepr/android-serialport-api实现了串口控制打印机（目前仅适用于XPrinter）、串口秤数据的读取、解析，并集成芯烨(Xprinter)提供的SDK实现USB、蓝牙、WLAN控制打印机。
+基于google的 https://github.com/cepr/android-serialport-api 实现了串口控制打印机（目前仅适用于XPrinter）、串口秤数据的读取、解析，并集成芯烨(Xprinter)提供的SDK实现USB、蓝牙、WLAN控制打印机。
 
 #### 使用说明
 
