@@ -9,9 +9,7 @@
 
 #### 使用说明
 
-1. xxxx
-2. xxxx
-3. xxxx
+[![](https://jitpack.io/v/nero21/bec-hardware-library.svg)](https://jitpack.io/#nero21/bec-hardware-library)
 
 #### 参与贡献
 
