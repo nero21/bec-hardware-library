@@ -37,7 +37,9 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
-    implementation(name: 'hardwarelibrary-release', ext: 'aar')
+    implementation 'com.github.nero21:bec-hardware-library:1.0.0'
+
+//    implementation(name: 'hardwarelibrary-release', ext: 'aar')
 //    implementation project (':hardwarelibrary')
 
 }
