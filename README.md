@@ -20,7 +20,7 @@ Step 1. Add the JitPack repository to your build file
   
 Step 2. Add the dependency 
   
-        dependencies {
+	dependencies {
 	        implementation 'com.github.nero21:bec-hardware-library:1.0.0'
 	}
 
