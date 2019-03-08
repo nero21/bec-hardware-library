@@ -9,7 +9,20 @@
 
 #### 使用说明
 
-[![](https://jitpack.io/v/nero21/bec-hardware-library.svg)](https://jitpack.io/#nero21/bec-hardware-library)
+Step 1. Add the JitPack repository to your build file
+
+	allprojects {
+		repositories {
+			...
+			maven { url 'https://jitpack.io' }
+		}
+	}
+  
+Step 2. Add the dependency  [![](https://jitpack.io/v/nero21/bec-hardware-library.svg)](https://jitpack.io/#nero21/bec-hardware-library)
+  
+  dependencies {
+	        implementation 'com.github.nero21:bec-hardware-library:1.0.0'
+	}
 
 #### 参与贡献
 
