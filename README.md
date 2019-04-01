@@ -1,6 +1,6 @@
 # HarwareLib  
 
-[![](https://jitpack.io/v/nero21/bec-hardware-library.svg)](https://jitpack.io/#nero21/bec-hardware-library) [![996.ICU](https://img.shields.io/badge/link-996.icu-red.svg)](https://996.
+[![](https://jitpack.io/v/nero21/bec-hardware-library.svg)](https://jitpack.io/#nero21/bec-hardware-library)
 
 #### 介绍
 一个方便使用、扩展性佳的串口、USB设备操作库；
